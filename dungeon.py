@@ -1,6 +1,6 @@
 ### rglk - The Roguelike Text Adventure
 ### dungeon.py - the dungeon class
-### Riley Pinkerton, 8/22/14
+### Riley Pinkerton, 8/25/14
 
 import random
 
@@ -40,4 +40,4 @@ class Dungeon:
     # Otherwise go in a random direction and try again
     else:
       random_direc = random.choice(direc_funcs)
-      add_random_room(self, random_direc(loc), _id)
+      self.add_random_room(random_direc(loc), _id)
