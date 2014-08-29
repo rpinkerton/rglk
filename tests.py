@@ -57,6 +57,26 @@ class DungeonTestCase(unittest.TestCase):
     self.assertEqual(len(self.num_starts), 1)
     self.assertEqual(len(self.num_finishes), 1)
 
+  def test_dungeon_num_doors(self):
+   self.dungeon = Dungeon(100)
+   self.double_num_doors = 0
+   self.double_doors = 0
+   for loc in self.dungeon.rooms.keys():
+     for adj_loc in adjacent_locs(loc):
+       if adj_loc in self.dungeon.rooms:
+         # Note that we double count all the edges by checking each vertex
+         self.double_num_doors += 1
+     for door_slot in self.dungeon.rooms[loc].doors.values():
+       if door_slot:
+         # Similarly we double count doors, so we can just directly compare
+         self.double_doors += 1
+   if self.double_num_doors != self.double_doors:
+     print self.dungeon.rooms
+     for loc, room in self.dungeon.rooms.iteritems():
+       print str(loc) + " " + str(room.doors) + str(room.id)
+   self.assertEqual(self.double_num_doors, self.double_doors)
+
+
 ## TODO fix this test
 #  def test_dungeon_finish_far(self):
 #    """Test that the finish is the far from the start"""
@@ -71,7 +91,7 @@ class DungeonTestCase(unittest.TestCase):
 
 def dungeon_tests():
   tests = ['test_dungeon_size', 'test_dungeon_randomness',
-           'test_dungeon_start_finish']
+           'test_dungeon_start_finish', 'test_dungeon_num_doors']
 
   return unittest.TestSuite(map(DungeonTestCase, tests))
 
